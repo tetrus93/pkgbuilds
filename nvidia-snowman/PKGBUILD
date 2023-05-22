@@ -5,34 +5,34 @@
 
 pkgbase=nvidia-snowman-utils
 pkgname=('nvidia-snowman-utils' 'opencl-nvidia-snowman' 'nvidia-snowman-dkms')
-pkgver=525.60.11
-_hostver=525.60.12
-pkgrel=2
+pkgver=525.105.17
+_hostver=525.105.14
+pkgrel=3
 arch=('x86_64')
 url='https://discord.gg/qh6dvPtxvb'
 license=('custom')
 options=('!strip')
 makedepends=('git' 'unzip' 'perl' 'cargo' 'rust' 'sed' 'libarchive')
-_pkg='NVIDIA-GRID-Linux-KVM-525.60.12-525.60.13-527.41'
+_pkg='NVIDIA-GRID-Linux-KVM-525.105.14-525.105.17-528.89'
 _consumerdriver="NVIDIA-Linux-x86_64-$pkgver"
 _vgpukvmdriver="NVIDIA-Linux-x86_64-$_hostver-vgpu-kvm"
-_griddriver="NVIDIA-Linux-x86_64-525.60.13-grid"
+_griddriver="NVIDIA-Linux-x86_64-525.105.17-grid"
 _mergeddriver="$_consumerdriver-merged-vgpu-kvm-patched"
 source=('nvidia-drm-outputclass.conf'
         'nvidia-utils.sysusers'
         'nvidia.rules'
         'nvidia-grid.conf'
         "https://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_consumerdriver}.run"
-        "https://archive.biggerthanshit.com/NVIDIA/Complete%20vGPU%2015.0%20package%20for%20Linux%20KVM%20ALL%20including%20supported%20guest%20drivers/${_pkg}.zip"
-        'git+https://github.com/VGPU-Community-Drivers/vGPU-Unlock-patcher.git#branch=525.60'
+        'NVIDIA-GRID-Linux-KVM-525.105.14-525.105.17-528.89.zip'
+        'git+https://github.com/VGPU-Community-Drivers/vGPU-Unlock-patcher.git#branch=525.105'
         'git+https://github.com/DualCoder/vgpu_unlock.git#commit=f432ffc8b7ed245df8858e9b38000d3b8f0352f4'
-        'git+https://github.com/mbilker/vgpu_unlock-rs#commit=3c35e581cf3d04e85f5e04ee09ce64fc0a55a1ff')
+        'git+https://github.com/mbilker/vgpu_unlock-rs#commit=44d5bb32ecd8bdcfe374772c31078a6e4eef921f')
 sha256sums=('be99ff3def641bb900c2486cce96530394c5dc60548fc4642f19d3a4c784134d'
             'd8d1caa5d72c71c6430c2a0d9ce1a674787e9272ccce28b9d5898ca24e60a167'
             '4fbfd461f939f18786e79f8dba5fdb48be9f00f2ff4b1bb2f184dbce42dd6fc3'
             '7d243854807a3b1150285d579979a9f380b3955f5f77ab9f400287fd4fd36f81'
             '816ee6c2e0813ccc3d4a7958f71fc49a37c60efe1d51d6146c1ce72403983d5d'
-            '9a276627f180dbcc85dcb88977c77b31b721c6dadcf477f0a084acf7fb9ce33c'
+            'c8e12c15b881df35e618bdee1f141cbfcc7e112358f0139ceaa95b48e20761e0'
             'SKIP'
             'SKIP'
             'SKIP')
@@ -66,7 +66,7 @@ prepare() {
     echo 'Building merged driver...'
     cd "$srcdir/vGPU-Unlock-patcher"
     chmod +x "$srcdir/vGPU-Unlock-patcher/patch.sh"
-    ./patch.sh general-merge
+    ./patch.sh --lk6-patches general-merge
 
     echo 'Building vgpu_unlock-rs...'
     cd "$srcdir/vgpu_unlock-rs"
