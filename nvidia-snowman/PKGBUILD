@@ -74,6 +74,13 @@ prepare() {
     mv "$srcdir/vgpu_unlock-rs/target/release/libvgpu_unlock_rs.so" "$srcdir"
     sed -i '/^Type=forking/a Environment=LD_PRELOAD=/usr/lib/nvidia/libvgpu_unlock_rs.so' "$srcdir/vGPU-Unlock-patcher/$_mergeddriver/init-scripts/systemd"/nvidia-vgpu{d,-mgr}.service
 
+    # https://github.com/keylase/nvidia-patch
+    echo 'Removing Video Codec SDK concurrent encode limit...'
+    sed -i 's/\xe8\x55\xc4\xfe\xff\x85\xc0\x41\x89\xc4/\xe8\x55\xc4\xfe\xff\x29\xc0\x41\x89\xc4/g' "$srcdir/vGPU-Unlock-patcher/$_mergeddriver/libnvidia-encode.so.$pkgver"
+
+    echo 'Enabling NvFBC...'
+    sed -i 's/\x83\xfe\x01\x73\x08\x48/\x83\xfe\x00\x72\x08\x48/' "$srcdir/vGPU-Unlock-patcher/$_mergeddriver/libnvidia-fbc.so.$pkgver"
+
     echo 'Preparing driver...'
     cd "$srcdir/vGPU-Unlock-patcher/$_mergeddriver"
     bsdtar -xf nvidia-persistenced-init.tar.bz2
