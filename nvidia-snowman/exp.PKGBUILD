@@ -199,8 +199,8 @@ package_nvidia-snowman-utils() {
     # Sigh libnvidia-vulkan-producer.so has no SONAME set so create_links doesn't catch it. NVIDIA please fix!
     patchelf --set-soname "libnvidia-vulkan-producer.so.1" "${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.${pkgver}"
 	
-	# i hope snowman doesn't go angry for this
-	install -Dm755 "libvgpucompat.so" "${pkgdir}/usr/lib/libvgpucompat.so"
+    # i hope snowman doesn't go angry for this
+    install -Dm755 "libvgpucompat.so" "${pkgdir}/usr/lib/libvgpucompat.so"
 	
     # Vulkan ICD
     install -Dm644 "nvidia_icd.json" "${pkgdir}/usr/share/vulkan/icd.d/nvidia_icd.json"
